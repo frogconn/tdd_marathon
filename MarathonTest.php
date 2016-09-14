@@ -2,11 +2,33 @@
 
 require "ConverterTest.php";
 
+class SortOverall
+{
+
+    public function addRunners($runners)
+    {
+        $this->runners = $runners;
+    }
+
+    public function getWinner()
+    {
+        return new Runner("Winner", "00:00:00");
+    }
+}
+
 class Runner
 {
 
-	private function convertTimeToSecond($time){
-		$SEVEN_HOURS = 25200;
+    public $name;
+
+    public function __construct($runnerName = null, $finishTime = null)
+    {
+        $this->finishTime = $finishTime;
+        $this->name = $runnerName;
+    }
+    private function convertTimeToSecond($time)
+    {
+        $SEVEN_HOURS = 25200;
         $NO_RUNING_TIME = 0;
 
         $convert = new Converter($time);
@@ -21,7 +43,7 @@ class Runner
         }
 
         return 0;
-	}
+    }
     public function setFinishTime($finishTime)
     {
         $this->finishTime = $finishTime;
@@ -32,24 +54,44 @@ class Runner
         $this->netTime = $netTime;
     }
 
-
     public function getFinishTimeInSecond()
     {
         return $this->convertTimeToSecond($this->finishTime);
     }
 
-    function getNetTimeInSecond(){
-    	return $this->convertTimeToSecond($this->netTime);
+    public function getNetTimeInSecond()
+    {
+        return $this->convertTimeToSecond($this->netTime);
     }
 }
 
 class MarathonTest extends PHPUnit_Framework_TestCase
 {
+
+    public function testSortingOverall()
+    {
+        $runners = [
+            new Runner("A", "00:50:00"),
+            new Runner("B", "7:00:01"),
+            new Runner("C", "01:01:01"),
+            new Runner("D", "00:50:55"),
+            new Runner("E", "05:01:01"),
+            new Runner("F", "00:50:43"),
+            new Runner("G", "01:56:33"),
+            new Runner("H", "03:11:11"),
+            new Runner("Winner", "00:44:21"),
+            new Runner("J", "02:22:11"),
+        ];
+        $sort = new SortOverall();
+        $sort->addRunners($runners);
+        $this->assertEquals("Winner", $sort->getWinner()->name);
+    }
+
     public function testRunnerNetTimeIsNotShowup()
     {
         $runner = new Runner();
         $runner->setNetTime("00:00:00");
-        $this->assertEquals(-1,$runner->getNetTimeInSecond());
+        $this->assertEquals(-1, $runner->getNetTimeInSecond());
     }
 
     public function testRunnerFinishTimeInTime()
