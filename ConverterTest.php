@@ -1,19 +1,20 @@
 <?php
 class Converter {
-	function toSecond(){
-		return 10;
+	function __construct($time) {
+		$this->time = $time;
 	}
-	function toMinute() {
-		return 60;
+	function toSecond(){
+		$date = date_parse($this->time);
+		return $date["hour"] * 3600 + $date["minute"] * 60 + $date["second"];
 	}
 }
 class ConverterTest extends PHPUnit_Framework_TestCase{
 
-	function testConverterMinute() {
-		$converter = new Converter("00:01:00");
-		$this->assertEquals(60, $converter->toMinute());
+	function testConverterElevenSecond() {
+		$converter = new Converter("00:00:11");
+		$this->assertEquals(11, $converter->toSecond());
 	}
-	function testConverterSecond(){
+	function testConverterTenSecond(){
 		$converter = new Converter("00:00:10");
 		$this->assertEquals(10,$converter->toSecond());
 	}
