@@ -20,12 +20,14 @@ class Runner
         $NO_RUNING_TIME = 0;
 
         $convert = new Converter($this->finishTime);
-        if ($convert->toSecond() == $NO_RUNING_TIME) {
+        $second = $convert->toSecond();
+        
+        if ($second == $NO_RUNING_TIME) {
             return -1;
-        } else if ($convert->toSecond() > $SEVEN_HOURS) {
+        } else if ($second > $SEVEN_HOURS) {
             return 0;
-        } else if ($convert->toSecond() > $NO_RUNING_TIME && $convert->toSecond() < $SEVEN_HOURS) {
-            return $convert->toSecond();
+        } else if ($second > $NO_RUNING_TIME && $second < $SEVEN_HOURS) {
+            return $second;
         }
 
         return 0;
