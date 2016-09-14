@@ -12,7 +12,21 @@ class SortOverall
 
     public function getWinner()
     {
-        return new Runner("Winner", "00:00:00");
+        usort($this->runners, array("SortOverall", "sortByFinishTimeInSecond"));
+        return $this->runners[0];
+    }
+
+    public function getRankingTop3()
+    {
+        usort($this->runners, array("SortOverall", "sortByFinishTimeInSecond"));
+        return array_slice($this->runners,0,3,true);
+    }
+
+    function sortByFinishTimeInSecond($a, $b) {
+    	if ($a->getFinishTimeInSecond() == $b->getFinishTimeInSecond()) {
+    		return 0;
+    	}
+    	return ($a->getFinishTimeInSecond() < $b->getFinishTimeInSecond()) ? -1 : 1;
     }
 }
 
@@ -26,7 +40,7 @@ class Runner
         $this->finishTime = $finishTime;
         $this->name = $runnerName;
     }
-    private function convertTimeToSecond($time)
+    public function convertTimeToSecond($time)
     {
         $SEVEN_HOURS = 25200;
         $NO_RUNING_TIME = 0;
@@ -72,7 +86,6 @@ class MarathonTest extends PHPUnit_Framework_TestCase
     {
         $runners = [
             new Runner("A", "00:50:00"),
-            new Runner("B", "7:00:01"),
             new Runner("C", "01:01:01"),
             new Runner("D", "00:50:55"),
             new Runner("E", "05:01:01"),
@@ -84,7 +97,26 @@ class MarathonTest extends PHPUnit_Framework_TestCase
         ];
         $sort = new SortOverall();
         $sort->addRunners($runners);
+
         $this->assertEquals("Winner", $sort->getWinner()->name);
+    }
+    public function testSortingOverallRankingTop3()
+    {
+        $runners = [
+            new Runner("Second", "00:50:00"),
+            new Runner("C", "01:01:01"),
+            new Runner("X", "00:50:55"),
+            new Runner("E", "05:01:01"),
+            new Runner("Third", "00:50:43"),
+            new Runner("G", "01:56:33"),
+            new Runner("H", "03:11:11"),
+            new Runner("Winner", "00:44:21"),
+            new Runner("J", "02:22:11"),
+        ];
+        $sort = new SortOverall();
+        $sort->addRunners($runners);
+        $topThree =  $sort->getRankingTop3();
+        $this->assertEquals("Winner Second Third", $topThree[0]->name." ".$topThree[1]->name." ".$topThree[2]->name);
     }
 
     public function testRunnerNetTimeIsNotShowup()
