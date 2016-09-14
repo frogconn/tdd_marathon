@@ -1,4 +1,6 @@
 <?php
+
+
 class Runner{
 	function setFinishTime($finishTime){
 		$this->finishTime=$finishTime;
@@ -15,6 +17,7 @@ class Runner{
 
 class MarathonTest extends PHPUnit_Framework_TestCase
 {
+
 	function testRunnerIsNotShowup(){
 		$runner=new Runner();
 		$runner->setFinishTime("00:00:00");
