@@ -10,7 +10,11 @@ class Converter {
 }
 class ConverterTest extends PHPUnit_Framework_TestCase{
 
-	function testConverterOneMinut(){
+	function testConverterOneHour(){
+		$converter = new Converter("01:00:00");
+		$this->assertEquals(3600,$converter->tosecond());
+	}
+	function testConverterOneMinute(){
 		$converter = new Converter("00:01:00");
 		$this->assertEquals(60,$converter->toSecond());
 	}
