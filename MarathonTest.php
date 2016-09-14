@@ -16,11 +16,16 @@ class Runner
 
     public function getFinishTimeInSecond()
     {
+        $SEVEN_HOURS = 25200;
+        $NO_RUNING_TIME = 0;
+
         $convert = new Converter($this->finishTime);
-        if ($convert->toSecond() == 0) {
+        if ($convert->toSecond() == $NO_RUNING_TIME) {
             return -1;
-        } else if ($convert->toSecond() > 25200) {
+        } else if ($convert->toSecond() > $SEVEN_HOURS) {
             return 0;
+        } else if ($convert->toSecond() > $NO_RUNING_TIME && $convert->toSecond() < $SEVEN_HOURS) {
+            return $convert->toSecond();
         }
 
         return 0;
@@ -29,6 +34,14 @@ class Runner
 
 class MarathonTest extends PHPUnit_Framework_TestCase
 {
+
+    public function testRunnerInTime()
+    {
+        $runner = new Runner();
+        $runner->setFinishTime("02:01:01");
+        $runner->setNetTime("02:01:01");
+        $this->assertEquals(7261, $runner->getFinishTimeInSecond());
+    }
 
     public function testRunnerIsNotShowup()
     {
