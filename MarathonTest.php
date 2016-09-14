@@ -1,5 +1,6 @@
 <?php
 
+require "ConverterTest.php";
 
 class Runner{
 	function setFinishTime($finishTime){
@@ -11,6 +12,7 @@ class Runner{
 	}
 	
 	function getFinishTimeInSecond(){
+		$convert = new Converter($this->finishTime);
 		return -1;
 	}	
 }
