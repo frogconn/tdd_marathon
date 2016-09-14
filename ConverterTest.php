@@ -4,12 +4,16 @@ class Converter {
 		$this->time = $time;
 	}
 	function toSecond(){
-		$date = date_parse($this->time);
-		return $date["hour"] * 3600 + $date["minute"] * 60 + $date["second"];
+		$runningTime = date_parse($this->time);
+		return $runningTime["hour"] * 3600 + $runningTime["minute"] * 60 + $runningTime["second"];
 	}
 }
 class ConverterTest extends PHPUnit_Framework_TestCase{
 
+	function testConverterFiftynineSecond(){
+		$converter = new Converter("00:00:59");
+		$this->assertEquals(59,$converter->toSecond());
+	}
 	function testConverterElevenSecond() {
 		$converter = new Converter("00:00:11");
 		$this->assertEquals(11, $converter->toSecond());
